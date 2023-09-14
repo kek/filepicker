@@ -5,6 +5,7 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type FilePickerModel struct {
@@ -50,17 +51,26 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m FilePickerModel) View() string {
-	s := ""
+	sidebar := ""
 	for i, f := range m.files {
 		if i == m.cursor {
-			s += "> "
+			sidebar += "> "
 		} else {
-			s += "  "
+			sidebar += "  "
 		}
-		s += f + "\n"
+		sidebar += f + "\n"
 	}
-	s += m.contents
-	return s
+
+	style := lipgloss.NewStyle().Height(20).BorderStyle(lipgloss.NormalBorder())
+
+	sidebar = style.Render(sidebar)
+
+	crop := lipgloss.NewStyle().MaxWidth(40).MaxHeight(20)
+	contents := crop.Render(m.contents)
+	contents = style.Render(contents)
+
+	view := lipgloss.JoinHorizontal(0, sidebar, contents)
+	return view
 }
 
 type content string
