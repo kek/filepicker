@@ -23,7 +23,10 @@ func (m FilePickerModel) Init() tea.Cmd {
 func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		fmt.Printf("msg: %v\n", msg)
+		switch msg.String() {
+		case "q":
+			return m, tea.Quit
+		}
 	}
 	return m, nil
 }
