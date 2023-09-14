@@ -31,22 +31,20 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "j":
 			fallthrough
 		case "down":
-			m.cursor++
-			cmd = readContents(m)
+			if m.cursor < len(m.files)-1 {
+				m.cursor++
+				cmd = readContents(m)
+			}
 		case "k":
 			fallthrough
 		case "up":
-			m.cursor--
-			cmd = readContents(m)
+			if m.cursor > 0 {
+				m.cursor--
+				cmd = readContents(m)
+			}
 		}
 	case content:
 		m.contents = string(msg)
-	}
-	if m.cursor < 0 {
-		m.cursor = 0
-	}
-	if m.cursor >= len(m.files) {
-		m.cursor = len(m.files) - 1
 	}
 	return m, cmd
 }
