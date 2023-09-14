@@ -8,12 +8,14 @@ import (
 )
 
 type FilePickerModel struct {
+	files    []string
+	cursor   int
 	gizmos   int
 	gremlins int
 }
 
 func NewModel() FilePickerModel {
-	return FilePickerModel{gizmos: 1, gremlins: 0}
+	return FilePickerModel{gizmos: 1, gremlins: 0, files: ListFiles(), cursor: 0}
 }
 
 func (m FilePickerModel) Init() tea.Cmd {
@@ -32,7 +34,11 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m FilePickerModel) View() string {
-	return "hello world"
+	s := ""
+	for _, f := range m.files {
+		s += f + "\n"
+	}
+	return s
 }
 
 func main() {
