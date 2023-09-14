@@ -29,8 +29,12 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q":
 			cmd = tea.Quit
+		case "j":
+			fallthrough
 		case "down":
 			m.cursor++
+		case "k":
+			fallthrough
 		case "up":
 			m.cursor--
 		}
