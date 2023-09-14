@@ -10,16 +10,15 @@ import (
 type FilePickerModel struct {
 	files    []string
 	cursor   int
-	gizmos   int
-	gremlins int
+	contents string
 }
 
 func NewModel() FilePickerModel {
-	return FilePickerModel{gizmos: 1, gremlins: 0, files: ListFiles(), cursor: 0}
+	return FilePickerModel{files: ListFiles(), cursor: 0}
 }
 
 func (m FilePickerModel) Init() tea.Cmd {
-	return nil
+	return readContents(m)
 }
 
 func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -38,6 +37,8 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "up":
 			m.cursor--
 		}
+	case string:
+		m.contents = msg
 	}
 	if m.cursor < 0 {
 		m.cursor = 0
@@ -58,7 +59,14 @@ func (m FilePickerModel) View() string {
 		}
 		s += f + "\n"
 	}
+	s += m.contents
 	return s
+}
+
+func readContents(m FilePickerModel) tea.Cmd {
+	return func() tea.Msg {
+		return "hello contents"
+	}
 }
 
 func main() {
