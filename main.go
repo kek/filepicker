@@ -42,7 +42,7 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	if m.cursor < 0 {
 		m.cursor = 0
 	}
-	if m.cursor > len(m.files) {
+	if m.cursor >= len(m.files) {
 		m.cursor = len(m.files) - 1
 	}
 	return m, cmd
