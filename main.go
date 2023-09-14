@@ -32,13 +32,15 @@ func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			fallthrough
 		case "down":
 			m.cursor++
+			cmd = readContents(m)
 		case "k":
 			fallthrough
 		case "up":
 			m.cursor--
+			cmd = readContents(m)
 		}
-	case string:
-		m.contents = msg
+	case content:
+		m.contents = string(msg)
 	}
 	if m.cursor < 0 {
 		m.cursor = 0
@@ -63,9 +65,16 @@ func (m FilePickerModel) View() string {
 	return s
 }
 
+type content string
+
 func readContents(m FilePickerModel) tea.Cmd {
 	return func() tea.Msg {
-		return "hello contents"
+		result, err := os.ReadFile(m.files[m.cursor])
+		if err != nil {
+			fmt.Printf("Error reading file: %v", err)
+			os.Exit(1)
+		}
+		return content(result)
 	}
 }
 
