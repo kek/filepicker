@@ -23,19 +23,35 @@ func (m FilePickerModel) Init() tea.Cmd {
 }
 
 func (m FilePickerModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd = nil
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "q":
-			return m, tea.Quit
+			cmd = tea.Quit
+		case "down":
+			m.cursor++
+		case "up":
+			m.cursor--
 		}
 	}
-	return m, nil
+	if m.cursor < 0 {
+		m.cursor = 0
+	}
+	if m.cursor > len(m.files) {
+		m.cursor = len(m.files) - 1
+	}
+	return m, cmd
 }
 
 func (m FilePickerModel) View() string {
 	s := ""
-	for _, f := range m.files {
+	for i, f := range m.files {
+		if i == m.cursor {
+			s += "> "
+		} else {
+			s += "  "
+		}
 		s += f + "\n"
 	}
 	return s
