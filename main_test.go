@@ -7,7 +7,7 @@ import (
 
 func TestListFiles(t *testing.T) {
 	files := ListFiles()
-	expected := []string{"filepicker", "go.mod", "go.sum", "main.go", "main_test.go", "tools.go"}
+	expected := []string{"go.mod", "go.sum", "main.go", "main_test.go", "tools.go"}
 	if !reflect.DeepEqual(files, expected) {
 		t.Errorf("got %v want %v", files, expected)
 	}
